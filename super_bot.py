@@ -1528,19 +1528,24 @@ def start_web():
 # 75️⃣ RUN EVERYTHING
 # ===============================
 
+def start_web():
+    import os
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
+
+
 if __name__ == "__main__":
     init_day()
 
     # Telegram thread
-    threading.Thread(target=start_telegram).start()
+    threading.Thread(target=start_telegram, daemon=True).start()
 
     # Trading loop thread
-    threading.Thread(target=scan_markets).start()
+    threading.Thread(target=scan_markets, daemon=True).start()
 
-    # Web dashboard
-    start_web()
-    
-    def start_web():
-    app.run(host="0.0.0.0", port=10000)
+    # Web dashboard (Flask)
+    threading.Thread(target=start_web, daemon=True).start()
 
-threading.Thread(target=start_web, daemon=True).start()
+    # Keep main thread alive
+    while True:
+        time.sleep(60)
