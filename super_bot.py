@@ -1313,12 +1313,105 @@ import threading
 
 app = Flask(__name__)
 
+@app.route("/")
+def home():
+    return render_template_string("""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Super Bot</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            body {
+                background:#0f172a;
+                color:white;
+                font-family:Arial;
+                padding:20px;
+            }
+            button {
+                width:100%;
+                padding:15px;
+                margin:10px 0;
+                font-size:18px;
+                border:none;
+                border-radius:10px;
+            }
+            .start { background:#22c55e; }
+            .stop { background:#ef4444; }
+        </style>
+    </head>
+    <body>
+        <h2>🤖 Super Bot</h2>
+        <button class="start" onclick="fetch('/api/start')">START BOT</button>
+        <button class="stop" onclick="fetch('/api/stop')">STOP BOT</button>
+        <pre id="status"></pre>
+
+        <script>
+        async function loadStatus(){
+            let r = await fetch('/api/status');
+            let d = await r.json();
+            document.getElementById('status').innerText =
+                JSON.stringify(d, null, 2);
+        }
+        loadStatus();
+        setInterval(loadStatus, 5000);
+        </script>
+    </body>
+    </html>
+    """)
+
 # ===============================
 # 71️⃣ DASHBOARD DATA API
 # ===============================
 
 @app.route("/api/status")
 def api_status():
+    @app.route("/")
+def home():
+    return render_template_string("""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Super Bot</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            body {
+                background:#0f172a;
+                color:white;
+                font-family:Arial;
+                padding:20px;
+            }
+            button {
+                width:100%;
+                padding:15px;
+                margin:10px 0;
+                font-size:18px;
+                border:none;
+                border-radius:10px;
+            }
+            .start { background:#22c55e; }
+            .stop { background:#ef4444; }
+        </style>
+    </head>
+    <body>
+        <h2>🤖 Super Bot</h2>
+        <button class="start" onclick="fetch('/api/start')">START BOT</button>
+        <button class="stop" onclick="fetch('/api/stop')">STOP BOT</button>
+        <pre id="status"></pre>
+
+        <script>
+        async function loadStatus(){
+            let r = await fetch('/api/status');
+            let d = await r.json();
+            document.getElementById('status').innerText =
+                JSON.stringify(d, null, 2);
+        }
+        loadStatus();
+        setInterval(loadStatus, 5000);
+        </script>
+    </body>
+    </html>
+    """)
     return jsonify({
         "mode": MODE,
         "balance": get_balance(),
@@ -1446,3 +1539,8 @@ if __name__ == "__main__":
 
     # Web dashboard
     start_web()
+    
+    def start_web():
+    app.run(host="0.0.0.0", port=10000)
+
+threading.Thread(target=start_web, daemon=True).start()
