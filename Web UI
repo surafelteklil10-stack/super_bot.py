@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Bot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>🤖 Smart Bot</h2>
+  <button onclick="sendAction()">START BOT</button>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
+body {
+  font-family: sans-serif;
+  text-align: center;
+  background: #0f172a;
+  color: white;
+}
+button {
+  padding: 15px 25px;
+  border: none;
+  border-radius: 12px;
+  background: #22c55e;
+  color: black;
+  font-size: 16px;
+}
+
+let tg = window.Telegram.WebApp;
+tg.expand();
+
+function sendAction() {
+  tg.sendData("START_BOT");
+}
